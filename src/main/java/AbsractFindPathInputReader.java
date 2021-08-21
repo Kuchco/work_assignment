@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,17 +18,33 @@ public abstract class AbsractFindPathInputReader {
         return null;
     }
 
-    public List<Point> getShortestPath(){
-        List<Point> shortestPath = new ArrayList<>();
+    public List<Path> getShortestPath(){
+        List<Path> shortestPath = new ArrayList<>();
         Path path = findExistingPath(maze.getEndAxis());
+        if(path == null){
+            System.out.println("Couldnt find a path");
+            return null;
+        }
         while(path.getAxis() != maze.getStartAxis()){
-            shortestPath.add(path.getAxis());
+            shortestPath.add(path);
             path = findExistingPath(path.getPrevious());
+        }
+        Collections.reverse(shortestPath);
+        for(Path finalPath : shortestPath){
+            if(finalPath.getPrevious().x < finalPath.getAxis().x){
+                System.out.print("r");
+            }else if(finalPath.getPrevious().x > finalPath.getAxis().x){
+                System.out.print("l");
+            }else if(finalPath.getPrevious().y < finalPath.getAxis().y){
+                System.out.print("d");
+            }else if(finalPath.getPrevious().y > finalPath.getAxis().y){
+                System.out.print("u");
+            }
         }
         return shortestPath;
     }
 
-    public List<Point> findShortestPath() {
+    public List<Path> findShortestPath() {
         Point current;
         queue.add(new QueueElement(maze.getStartAxis(), maze.getStartAxis()));
 
