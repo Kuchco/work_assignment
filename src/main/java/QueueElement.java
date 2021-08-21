@@ -1,25 +1,19 @@
 import java.awt.*;
 
 public class QueueElement {
-    private int from;
-    private int to;
-    private int cost;
+    private Point from;
+    private Point to;
 
-    public QueueElement(int from, int to, int cost) {
+    public QueueElement(Point from, Point to) {
         this.from = from;
         this.to = to;
-        this.cost = cost;
     }
 
-    public int getFrom() {
+    public Point getFrom() {
         return from;
     }
 
-    public int getTo() {
+    public Point getTo() {
         return to;
-    }
-
-    public int getCost() {
-        return cost;
     }
 }

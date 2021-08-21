@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class Maze {
-    private List<MazeElement> mazeElements;
+    private List<List<MazeElement>> mazeElements;
     private Point startAxis;
     private int start;
     private Point endAxis;
@@ -16,7 +16,7 @@ public class Maze {
         this.mazeElements = new ArrayList<>();
     }
 
-    public List<MazeElement> getMazeElements() {
+    public List<List<MazeElement>> getMazeElements() {
         return mazeElements;
     }
 

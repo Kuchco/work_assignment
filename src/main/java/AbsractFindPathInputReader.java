@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -5,30 +6,30 @@ import java.util.List;
 public abstract class AbsractFindPathInputReader {
     private Maze maze = new Maze();
     private LinkedList<QueueElement> queue = new LinkedList<>();
-    private List<PathAndCost> pathsAndCosts = new ArrayList<>();
+    private List<Path> paths = new ArrayList<>();
 
-    public PathAndCost findExistingPath(int element){
-        for(PathAndCost path : pathsAndCosts){
-            if(path.getAxis() == element){
+    public Path findExistingPath(Point element){
+        for(Path path : paths){
+            if(path.getAxis().x == element.x && path.getAxis().y == element.y){
                 return path;
             }
         }
         return null;
     }
 
-    public List<Integer> getShortestPath(){
-        List<Integer> shortestPath = new ArrayList<>();
-        PathAndCost path = findExistingPath(maze.getEnd());
-        while(path.getAxis() != maze.getStart()){
+    public List<Point> getShortestPath(){
+        List<Point> shortestPath = new ArrayList<>();
+        Path path = findExistingPath(maze.getEndAxis());
+        while(path.getAxis() != maze.getStartAxis()){
             shortestPath.add(path.getAxis());
             path = findExistingPath(path.getPrevious());
         }
         return shortestPath;
     }
 
-    public void findShortestPath() {
-        int current;
-        queue.add(new QueueElement(maze.getStart(), maze.getStart(), 1));
+    public List<Point> findShortestPath() {
+        Point current;
+        queue.add(new QueueElement(maze.getStartAxis(), maze.getStartAxis()));
 
         while(!queue.isEmpty()){
             while(!queue.isEmpty() && findExistingPath(queue.getFirst().getTo()) != null){
@@ -37,55 +38,42 @@ public abstract class AbsractFindPathInputReader {
             if (queue.isEmpty()){
                 break;
             }
-            pathsAndCosts.add(new PathAndCost(queue.getFirst().getTo(), queue.getFirst().getFrom(), queue.getFirst().getCost()));
+            paths.add(new Path(queue.getFirst().getTo(), queue.getFirst().getFrom()));
 
             current = queue.getFirst().getTo();
             queue.removeFirst();
 
-            int up = current - maze.getWidth();
-            int down = current + maze.getWidth();
-            int left = current - 1;
-            int right = current + 1;
+            Point up = new Point(current.x, current.y-1);
+            Point down = new Point(current.x, current.y+1);
+            Point left = new Point(current.x-1, current.y);
+            Point right = new Point(current.x+1, current.y);
 
-            if(current == 422){
-                System.out.println("noise");
-            }
-
-            int[] noise = new int[]{up,down,left,right};
-            for(int neigh : noise){
-                if(neigh >= 0 && neigh < (maze.getWidth() * maze.getHeight()) && right%maze.getWidth() != 0 && left+1% maze.getWidth() != 0){
-                    if (maze.getMazeElements().get(neigh).getType() == 0 || maze.getMazeElements().get(neigh).getType() == 4 && findExistingPath(neigh) == null) {
-                        queue.add(new QueueElement(current, neigh, 1));
+            Point[] neighbors = new Point[]{up,down,left,right};
+            for(Point neigh : neighbors){
+                if(!checkIfOutOfRange(neigh)){
+                    if (maze.getMazeElements().get(neigh.y).get(neigh.x).getType() == 0 || maze.getMazeElements().get(neigh.y).get(neigh.x).getType() == 4 && findExistingPath(neigh) == null) {
+                        queue.add(new QueueElement(current, neigh));
                     }
                 }
             }
-            if(findExistingPath(maze.getEnd()) != null){
+            if(findExistingPath(maze.getEndAxis()) != null){
                 break;
             }
         }
+
+        return getShortestPath();
+    }
+
+    public boolean checkIfOutOfRange(Point point){
+        if(point.x < 0 || point.x >= maze.getMazeElements().get(0).size()){
+            return true;
+        }else if(point.y < 0 || point.y >= maze.getMazeElements().size()){
+            return true;
+        }
+        return false;
     }
 
     public Maze getMaze() {
         return maze;
-    }
-
-    public void setMaze(Maze maze) {
-        this.maze = maze;
-    }
-
-    public LinkedList<QueueElement> getQueue() {
-        return queue;
-    }
-
-    public void setQueue(LinkedList<QueueElement> queue) {
-        this.queue = queue;
-    }
-
-    public List<PathAndCost> getPathsAndCosts() {
-        return pathsAndCosts;
-    }
-
-    public void setPathsAndCosts(List<PathAndCost> pathsAndCosts) {
-        this.pathsAndCosts = pathsAndCosts;
     }
 }

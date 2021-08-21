@@ -1,16 +1,18 @@
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-import java.util.Vector;
 
 public class FindPathInputReaderFile extends AbsractFindPathInputReader{
-    public Maze readFile() throws FileNotFoundException {
+    public Maze readFile(String filePath) throws FileNotFoundException {
         Maze maze = getMaze();
         int x = 0;
         int y = 0;
-        Vector<MazeElement> mazeRow = new Vector<MazeElement>();
-        Scanner input = new Scanner(new File("./src/main/resources/inputMaze.txt"));
+
+        List<MazeElement> mazeRow = new ArrayList<>();
+        Scanner input = new Scanner(new File(filePath));
         while(input.hasNextLine())
         {
             Scanner row = new Scanner(input.nextLine());
@@ -23,10 +25,12 @@ public class FindPathInputReaderFile extends AbsractFindPathInputReader{
                     else if(c == 'X'){
                         maze.setEndAxis(new Point(x,y));
                     }
-                    maze.getMazeElements().add(new MazeElement(c, new Point(x,y)));
+                    mazeRow.add(new MazeElement(c, new Point(x,y)));
                     ++x;
                 }
             }
+            maze.getMazeElements().add(new ArrayList<>(mazeRow));
+            mazeRow.clear();
             maze.setWidth(x);
             x = 0;
             ++y;
