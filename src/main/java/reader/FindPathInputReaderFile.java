@@ -2,14 +2,12 @@ package reader;
 
 import maze.Maze;
 import maze.MazeElement;
-
-import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class FindPathInputReaderFile extends AbsractFindPathInputReader {
+public class FindPathInputReaderFile extends AbstractFindPathInputReader {
     /**
      * Reads and saves maze from file at 'filePath'. Calls 'verifyMaze()' to find errors in the loaded maze.
      */
@@ -20,11 +18,9 @@ public class FindPathInputReaderFile extends AbsractFindPathInputReader {
 
         List<MazeElement> mazeRow = new ArrayList<>();
         Scanner input = new Scanner(new File(filePath));
-        while(input.hasNextLine())
-        {
+        while (input.hasNextLine()) {
             Scanner row = new Scanner(input.nextLine());
-            if(row.hasNext())
-            {
+            if (row.hasNext()) {
                 currentLine = row.next();
                 mazeRow = setPoints(currentLine, y);
             }

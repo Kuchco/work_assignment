@@ -3,11 +3,10 @@ import org.junit.jupiter.api.Test;
 import reader.FindPathInputReaderFile;
 
 public class Tests {
+    private final FindPathInputReaderFile findPathInputReaderFile = new FindPathInputReaderFile();
 
     @Test
     void noPathFileTestMaze1() {
-        FindPathInputReaderFile findPathInputReaderFile = new FindPathInputReaderFile();
-
         Exception exception = Assertions.assertThrows(Exception.class, () -> {
             findPathInputReaderFile.readFile("./src/main/resources/noPathMaze.txt");
             findPathInputReaderFile.findShortestPath();
@@ -23,11 +22,8 @@ public class Tests {
 
     @Test
     void multipleEndsFileTestMaze2() {
-        FindPathInputReaderFile findPathInputReaderFile = new FindPathInputReaderFile();
-
-        Exception exception = Assertions.assertThrows(Exception.class, () -> {
-            findPathInputReaderFile.readFile("./src/main/resources/multipleEndsMaze.txt");
-        });
+        Exception exception = Assertions.assertThrows(Exception.class, () -> findPathInputReaderFile
+                .readFile("./src/main/resources/multipleEndsMaze.txt"));
 
         String expectedMessage = "Only one end point is allowed";
         String actualMessage = exception.getMessage();
@@ -39,11 +35,8 @@ public class Tests {
 
     @Test
     void multipleStartsFileTestMaze3() {
-        FindPathInputReaderFile findPathInputReaderFile = new FindPathInputReaderFile();
-
-        Exception exception = Assertions.assertThrows(Exception.class, () -> {
-            findPathInputReaderFile.readFile("./src/main/resources/multipleStartsMaze.txt");
-        });
+        Exception exception = Assertions.assertThrows(Exception.class, () -> findPathInputReaderFile
+                .readFile("./src/main/resources/multipleStartsMaze.txt"));
 
         String expectedMessage = "Only one start point is allowed";
         String actualMessage = exception.getMessage();
@@ -55,11 +48,8 @@ public class Tests {
 
     @Test
     void noStartTestMaze4() {
-        FindPathInputReaderFile findPathInputReaderFile = new FindPathInputReaderFile();
-
-        Exception exception = Assertions.assertThrows(Exception.class, () -> {
-            findPathInputReaderFile.readFile("./src/main/resources/noStartMaze.txt");
-        });
+        Exception exception = Assertions.assertThrows(Exception.class, () -> findPathInputReaderFile
+                .readFile("./src/main/resources/noStartMaze.txt"));
 
         String expectedMessage = "Couldnt find start or end point";
         String actualMessage = exception.getMessage();
@@ -70,12 +60,9 @@ public class Tests {
     }
 
     @Test
-    void badDimensionsFileTestMaze6(){
-        FindPathInputReaderFile findPathInputReaderFile = new FindPathInputReaderFile();
-
-        Exception exception = Assertions.assertThrows(Exception.class, () -> {
-            findPathInputReaderFile.readFile("./src/main/resources/badDimensionsMaze.txt");
-        });
+    void badDimensionsFileTestMaze6() {
+        Exception exception = Assertions.assertThrows(Exception.class, () -> findPathInputReaderFile
+                .readFile("./src/main/resources/badDimensionsMaze.txt"));
 
         String expectedMessage = "Bad dimensions";
         String actualMessage = exception.getMessage();
@@ -87,10 +74,8 @@ public class Tests {
 
     @Test
     void directionsFileTestMaze5() throws Exception {
-        FindPathInputReaderFile findPathInputReaderFile = new FindPathInputReaderFile();
-
         findPathInputReaderFile.readFile("./src/main/resources/validMaze.txt");
-        String actualDirections =  findPathInputReaderFile.findShortestPath();
+        String actualDirections = findPathInputReaderFile.findShortestPath();
         String expectedDirections = "rrrddl";
         System.out.println("Actual directions were: " + actualDirections);
         System.out.println("Expected directions were: " + expectedDirections);
@@ -99,12 +84,9 @@ public class Tests {
     }
 
     @Test
-    void badCharacterFileTest(){
-        FindPathInputReaderFile findPathInputReaderFile = new FindPathInputReaderFile();
-
-        Exception exception = Assertions.assertThrows(Exception.class, () -> {
-            findPathInputReaderFile.readFile("./src/main/resources/badCharacterMaze.txt");
-        });
+    void badCharacterFileTest() {
+        Exception exception = Assertions.assertThrows(Exception.class, () -> findPathInputReaderFile
+                .readFile("./src/main/resources/badCharacterMaze.txt"));
 
         String expectedMessage = "Bad input. Allowed 'SX.#'";
         String actualMessage = exception.getMessage();
