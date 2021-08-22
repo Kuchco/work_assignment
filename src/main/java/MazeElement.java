@@ -7,24 +7,18 @@ public class MazeElement {
     public MazeElement(char element, Point axis) {
         this.axis = axis;
         switch (element) {
-            case 'S' -> this.type = 3;
-            case 'X' -> this.type = 4;
-            case '.' -> this.type = 0;
-            case '#' -> this.type = 1;
-        }
-    }
-
-    public MazeElement() {
-        this.type = -1;
-        this.axis = new Point();
-    }
-
-    public void add(String element){
-        switch (element) {
-            case "S" -> this.type = 3;
-            case "X" -> this.type = 4;
-            case "." -> this.type = 0;
-            case "#" -> this.type = 1;
+            case 'S':
+                this.type = 3;
+                break;
+            case 'X':
+                this.type = 4;
+                break;
+            case '.':
+                this.type = 0;
+                break;
+            case '#':
+                this.type = 1;
+                break;
         }
     }
 

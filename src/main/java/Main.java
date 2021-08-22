@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    public static final String PATH = "./src/main/resources/inputMaze.txt";
     public static void main(String[] args) {
 
         System.out.println("Choose reader: \nFile: 1 \nInput: 2");
@@ -20,13 +21,21 @@ public class Main {
                 }catch (FileNotFoundException fnfe) {
                     System.out.println("File was not found");
                     break;
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                    break;
                 }
                 List<Path> shortestPath =  findPathInputReaderFile.findShortestPath();
                 break;
             }else if(input.equals("2")){
                 System.out.println("Input maze by rows. When done input 'exit'.");
                 FindPathInputReaderStdIn findPathInputReaderStdIn = new FindPathInputReaderStdIn();
-                findPathInputReaderStdIn.readInput();
+                try {
+                    findPathInputReaderStdIn.readInput();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
                 List<Path> shortestPath =  findPathInputReaderStdIn.findShortestPath();
                 break;
             }else{

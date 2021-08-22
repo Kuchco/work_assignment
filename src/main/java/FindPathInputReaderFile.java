@@ -1,15 +1,18 @@
 import java.awt.*;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class FindPathInputReaderFile extends AbsractFindPathInputReader{
-    public Maze readFile(String filePath) throws FileNotFoundException {
+    public void readFile(String filePath) throws Exception {
         Maze maze = getMaze();
         int x = 0;
         int y = 0;
+        int startCounter = 0;
+        int endCounter = 0;
+        String nextRow = "";
+        Integer previousRow = null;
 
         List<MazeElement> mazeRow = new ArrayList<>();
         Scanner input = new Scanner(new File(filePath));
@@ -18,26 +21,48 @@ public class FindPathInputReaderFile extends AbsractFindPathInputReader{
             Scanner row = new Scanner(input.nextLine());
             if(row.hasNext())
             {
-                for (char c : row.next().toCharArray()){
-                    if(c == 'S'){
-                        maze.setStartAxis(new Point(x,y));
-                    }
-                    else if(c == 'X'){
-                        maze.setEndAxis(new Point(x,y));
+                nextRow = row.next();
+                if(previousRow == null){
+                    previousRow = nextRow.length();
+                }
+                if(previousRow != nextRow.length()){
+                    throw new Exception("Bad dimensions");
+                }
+                for (char c : nextRow.toCharArray()){
+                    switch (c){
+                        case 'S':
+                            if(++startCounter == 1){
+                                maze.setStartAxis(new Point(x,y));
+                            }else{
+                                throw new Exception("Only one start point is allowed");
+                            }
+                            break;
+                        case 'X':
+                            if(++endCounter == 1){
+                                maze.setEndAxis(new Point(x,y));
+                            }else{
+                                throw new Exception("Only one end point is allowed");
+                            }
+                            break;
+                        case '.':
+                        case '#':
+                            break;
+                        default:
+                            throw new Exception("Bad input. Allowed 'SX.#'");
                     }
                     mazeRow.add(new MazeElement(c, new Point(x,y)));
                     ++x;
                 }
             }
+            previousRow = nextRow.length();
             maze.getMazeElements().add(new ArrayList<>(mazeRow));
             mazeRow.clear();
             maze.setWidth(x);
             x = 0;
             ++y;
         }
-        maze.setHeight(y);
-        maze.setEnd(maze.getWidth() * (maze.getEndAxis().y+1) - (maze.getWidth() - maze.getEndAxis().x));
-        maze.setStart(maze.getWidth() * (maze.getStartAxis().y+1) - (maze.getWidth() - maze.getStartAxis().x));
-        return maze;
+        if(startCounter == 0 || endCounter == 0){
+            throw new Exception("Couldnt find start or end point");
+        }
     }
 }

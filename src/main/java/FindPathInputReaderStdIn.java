@@ -1,32 +1,54 @@
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class FindPathInputReaderStdIn extends AbsractFindPathInputReader{
-    public Maze readInput() {
+    public void readInput() throws Exception {
         Maze maze = getMaze();
         int x = 0;
         int y = 0;
+        int startCounter = 0;
+        int endCounter = 0;
+        Integer previousRow = null;
 
         List<MazeElement> mazeRow = new ArrayList<>();
         Scanner input = new Scanner(System.in);
-        String row = "";
-        row = input.nextLine();
+        String row = input.nextLine();
         while(!row.equals("exit"))
         {
+            if(previousRow == null){
+                previousRow = row.length();
+            }
+            if(previousRow != row.length()){
+                throw new Exception("Bad dimensions");
+            }
             for (char c : row.toCharArray()){
-                if(c == 'S'){
-                    maze.setStartAxis(new Point(x,y));
-                }
-                else if(c == 'X'){
-                    maze.setEndAxis(new Point(x,y));
+                switch (c){
+                    case 'S':
+                        if(++startCounter == 1){
+                            maze.setStartAxis(new Point(x,y));
+                        }else{
+                            throw new Exception("Only one start point is allowed");
+                        }
+                        break;
+                    case 'X':
+                        if(++endCounter == 1){
+                            maze.setEndAxis(new Point(x,y));
+                        }else{
+                            throw new Exception("Only one end point is allowed");
+                        }
+                        break;
+                    case '.':
+                    case '#':
+                        break;
+                    default:
+                        throw new Exception("Bad input. Allowed 'SX.#'");
                 }
                 mazeRow.add(new MazeElement(c, new Point(x,y)));
                 ++x;
             }
+            previousRow = row.length();
             maze.getMazeElements().add(new ArrayList<>(mazeRow));
             mazeRow.clear();
             maze.setWidth(x);
@@ -34,9 +56,8 @@ public class FindPathInputReaderStdIn extends AbsractFindPathInputReader{
             ++y;
             row = input.nextLine();
         }
-        maze.setHeight(y);
-        maze.setEnd(maze.getWidth() * (maze.getEndAxis().y+1) - (maze.getWidth() - maze.getEndAxis().x));
-        maze.setStart(maze.getWidth() * (maze.getStartAxis().y+1) - (maze.getWidth() - maze.getStartAxis().x));
-        return maze;
+        if(startCounter == 0 || endCounter == 0){
+            throw new Exception("Couldnt find start or end point");
+        }
     }
 }
