@@ -1,3 +1,6 @@
+import reader.FindPathInputReaderFile;
+import reader.FindPathInputReaderStdIn;
+
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 

@@ -1,3 +1,4 @@
+package maze;
 
 public class MazeElement {
     private final char type;

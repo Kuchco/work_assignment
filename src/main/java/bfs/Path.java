@@ -1,3 +1,5 @@
+package bfs;
+
 import java.awt.Point;
 
 public class Path {

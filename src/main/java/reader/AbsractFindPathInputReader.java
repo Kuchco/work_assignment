@@ -1,3 +1,10 @@
+package reader;
+
+import bfs.Path;
+import bfs.QueueElement;
+import maze.Maze;
+import maze.MazeElement;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;

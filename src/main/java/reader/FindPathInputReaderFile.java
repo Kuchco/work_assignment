@@ -1,10 +1,15 @@
+package reader;
+
+import maze.Maze;
+import maze.MazeElement;
+
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class FindPathInputReaderFile extends AbsractFindPathInputReader{
+public class FindPathInputReaderFile extends AbsractFindPathInputReader {
     public void readFile(String filePath) throws Exception {
         Maze maze = getMaze();
         int x = 0;

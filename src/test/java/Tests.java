@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reader.FindPathInputReaderFile;
 
 public class Tests {
 
@@ -97,4 +98,19 @@ public class Tests {
         Assertions.assertEquals(expectedDirections, actualDirections);
     }
 
+    @Test
+    void badCharacterFileTest(){
+        FindPathInputReaderFile findPathInputReaderFile = new FindPathInputReaderFile();
+
+        Exception exception = Assertions.assertThrows(Exception.class, () -> {
+            findPathInputReaderFile.readFile("./src/main/resources/badCharacterMaze.txt");
+        });
+
+        String expectedMessage = "Bad input. Allowed 'SX.#'";
+        String actualMessage = exception.getMessage();
+        System.out.println("Actual message was: " + actualMessage);
+        System.out.println("Expected message was: " + expectedMessage);
+
+        Assertions.assertTrue(actualMessage.contains(expectedMessage));
+    }
 }
