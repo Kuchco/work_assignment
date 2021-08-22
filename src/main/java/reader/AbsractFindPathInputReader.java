@@ -16,6 +16,9 @@ public abstract class AbsractFindPathInputReader {
     private LinkedList<QueueElement> queue = new LinkedList<>();
     private List<Path> paths = new ArrayList<>();
 
+    /**
+     * Finds specific 'element' in saved paths.
+     */
     public Path findExistingPath(Point element){
         for(Path path : paths){
             if(path.getAxis().x == element.x && path.getAxis().y == element.y){
@@ -25,6 +28,9 @@ public abstract class AbsractFindPathInputReader {
         return null;
     }
 
+    /**
+     * Goes through the path saved by 'findShortestPath()' and creates String with directions. Throws an Exception if there is no path.
+     */
     public String getShortestPath() throws Exception {
         List<Path> shortestPath = new ArrayList<>();
         char[] directions;
@@ -55,6 +61,9 @@ public abstract class AbsractFindPathInputReader {
         return new String(directions);
     }
 
+    /**
+     * Finds and saves the shortest path in loaded maze using BFS algorithm and uses 'getShortestPath()' to return it.
+     */
     public String findShortestPath() throws Exception {
         Point current;
         queue.add(new QueueElement(maze.getStartAxis(), maze.getStartAxis()));
@@ -91,6 +100,9 @@ public abstract class AbsractFindPathInputReader {
         return getShortestPath();
     }
 
+    /**
+     * Verifies loaded maze and throws exceptions with messages specifying the problem.
+     */
     public void verifyMaze() throws Exception {
         int startCounter = 0;
         int endCounter = 0;
@@ -124,6 +136,9 @@ public abstract class AbsractFindPathInputReader {
         }
     }
 
+    /**
+     * Checks if 'point' is not out of range in loaded maze
+     */
     public boolean checkIfOutOfRange(Point point){
         if(point.x < 0 || point.x >= maze.getMazeElements().get(0).size()){
             return true;

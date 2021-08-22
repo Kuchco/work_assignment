@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FindPathInputReaderFile extends AbsractFindPathInputReader {
+    /**
+     * Reads and saves maze from file at 'filePath'. Calls 'verifyMaze()' to find errors in the loaded maze.
+     */
     public void readFile(String filePath) throws Exception {
         Maze maze = getMaze();
         int x = 0;
