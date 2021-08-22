@@ -148,6 +148,26 @@ public abstract class AbsractFindPathInputReader {
         return false;
     }
 
+    public List<MazeElement> setPoints(String currentLine, int y){
+        List<MazeElement> mazeRow = new ArrayList<>();
+        int x = 0;
+        for (char c : currentLine.toCharArray()){
+            switch (c){
+                case 'S':
+                    maze.setStartAxis(new Point(x,y));
+                    break;
+                case 'X':
+                    maze.setEndAxis(new Point(x,y));
+                    break;
+                default:
+                    break;
+            }
+            mazeRow.add(new MazeElement(c));
+            ++x;
+        }
+        return mazeRow;
+    }
+
     public Maze getMaze() {
         return maze;
     }

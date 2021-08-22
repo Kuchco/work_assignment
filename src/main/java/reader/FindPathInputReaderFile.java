@@ -15,7 +15,6 @@ public class FindPathInputReaderFile extends AbsractFindPathInputReader {
      */
     public void readFile(String filePath) throws Exception {
         Maze maze = getMaze();
-        int x = 0;
         int y = 0;
         String currentLine;
 
@@ -27,24 +26,10 @@ public class FindPathInputReaderFile extends AbsractFindPathInputReader {
             if(row.hasNext())
             {
                 currentLine = row.next();
-                for (char c : currentLine.toCharArray()){
-                    switch (c){
-                        case 'S':
-                            maze.setStartAxis(new Point(x,y));
-                            break;
-                        case 'X':
-                            maze.setEndAxis(new Point(x,y));
-                            break;
-                        default:
-                            break;
-                    }
-                    mazeRow.add(new MazeElement(c));
-                    ++x;
-                }
+                mazeRow = setPoints(currentLine, y);
             }
             maze.getMazeElements().add(new ArrayList<>(mazeRow));
             mazeRow.clear();
-            x = 0;
             ++y;
         }
         verifyMaze();
