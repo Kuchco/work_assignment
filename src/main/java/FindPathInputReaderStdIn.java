@@ -8,56 +8,32 @@ public class FindPathInputReaderStdIn extends AbsractFindPathInputReader{
         Maze maze = getMaze();
         int x = 0;
         int y = 0;
-        int startCounter = 0;
-        int endCounter = 0;
-        Integer previousRow = null;
 
         List<MazeElement> mazeRow = new ArrayList<>();
         Scanner input = new Scanner(System.in);
-        String row = input.nextLine();
-        while(!row.equals("exit"))
+        String currentLine = input.nextLine();
+        while(!currentLine.equals("exit"))
         {
-            if(previousRow == null){
-                previousRow = row.length();
-            }
-            if(previousRow != row.length()){
-                throw new Exception("Bad dimensions");
-            }
-            for (char c : row.toCharArray()){
+            for (char c : currentLine.toCharArray()){
                 switch (c){
                     case 'S':
-                        if(++startCounter == 1){
-                            maze.setStartAxis(new Point(x,y));
-                        }else{
-                            throw new Exception("Only one start point is allowed");
-                        }
+                        maze.setStartAxis(new Point(x,y));
                         break;
                     case 'X':
-                        if(++endCounter == 1){
-                            maze.setEndAxis(new Point(x,y));
-                        }else{
-                            throw new Exception("Only one end point is allowed");
-                        }
-                        break;
-                    case '.':
-                    case '#':
+                        maze.setEndAxis(new Point(x,y));
                         break;
                     default:
-                        throw new Exception("Bad input. Allowed 'SX.#'");
+                        break;
                 }
-                mazeRow.add(new MazeElement(c, new Point(x,y)));
+                mazeRow.add(new MazeElement(c));
                 ++x;
             }
-            previousRow = row.length();
             maze.getMazeElements().add(new ArrayList<>(mazeRow));
             mazeRow.clear();
-            maze.setWidth(x);
             x = 0;
             ++y;
-            row = input.nextLine();
+            currentLine = input.nextLine();
         }
-        if(startCounter == 0 || endCounter == 0){
-            throw new Exception("Couldnt find start or end point");
-        }
+        verifyMaze();
     }
 }

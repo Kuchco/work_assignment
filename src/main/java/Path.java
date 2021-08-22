@@ -1,8 +1,8 @@
-import java.awt.*;
+import java.awt.Point;
 
 public class Path {
-    private Point axis;
-    private Point previous;
+    private final Point axis;
+    private final Point previous;
 
     public Path(Point axis, Point previous) {
         this.axis = axis;

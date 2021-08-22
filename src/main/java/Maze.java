@@ -3,10 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Maze {
-    private List<List<MazeElement>> mazeElements;
+    private final List<List<MazeElement>> mazeElements;
     private Point startAxis;
     private Point endAxis;
-    private int width;
 
     public Maze() {
         this.mazeElements = new ArrayList<>();
@@ -22,10 +21,6 @@ public class Maze {
 
     public void setEndAxis(Point endAxis) {
         this.endAxis = endAxis;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
     }
 
     public Point getStartAxis() {

@@ -1,6 +1,4 @@
-import java.awt.*;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -25,7 +23,12 @@ public class Main {
                     System.out.println(e.getMessage());
                     break;
                 }
-                List<Path> shortestPath =  findPathInputReaderFile.findShortestPath();
+                try {
+                    System.out.println(findPathInputReaderFile.findShortestPath());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
                 break;
             }else if(input.equals("2")){
                 System.out.println("Input maze by rows. When done input 'exit'.");
@@ -36,7 +39,12 @@ public class Main {
                     System.out.println(e.getMessage());
                     break;
                 }
-                List<Path> shortestPath =  findPathInputReaderStdIn.findShortestPath();
+                try {
+                    System.out.println(findPathInputReaderStdIn.findShortestPath());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
                 break;
             }else{
                 System.out.println("Wrong input, please try again");

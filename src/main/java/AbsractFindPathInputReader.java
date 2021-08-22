@@ -18,33 +18,37 @@ public abstract class AbsractFindPathInputReader {
         return null;
     }
 
-    public List<Path> getShortestPath(){
+    public String getShortestPath() throws Exception {
         List<Path> shortestPath = new ArrayList<>();
+        char[] directions;
+        int index = 0;
         Path path = findExistingPath(maze.getEndAxis());
+
         if(path == null){
-            System.out.println("Couldnt find a path");
-            return null;
+            throw new Exception("Couldnt find a path");
         }
         while(path.getAxis() != maze.getStartAxis()){
             shortestPath.add(path);
             path = findExistingPath(path.getPrevious());
         }
         Collections.reverse(shortestPath);
+        directions = new char[shortestPath.size()];
+
         for(Path finalPath : shortestPath){
             if(finalPath.getPrevious().x < finalPath.getAxis().x){
-                System.out.print("r");
+                directions[index++] = 'r';
             }else if(finalPath.getPrevious().x > finalPath.getAxis().x){
-                System.out.print("l");
+                directions[index++] = 'l';
             }else if(finalPath.getPrevious().y < finalPath.getAxis().y){
-                System.out.print("d");
+                directions[index++] = 'd';
             }else if(finalPath.getPrevious().y > finalPath.getAxis().y){
-                System.out.print("u");
+                directions[index++] = 'u';
             }
         }
-        return shortestPath;
+        return new String(directions);
     }
 
-    public List<Path> findShortestPath() {
+    public String findShortestPath() throws Exception {
         Point current;
         queue.add(new QueueElement(maze.getStartAxis(), maze.getStartAxis()));
 
@@ -68,7 +72,7 @@ public abstract class AbsractFindPathInputReader {
             Point[] neighbors = new Point[]{up,down,left,right};
             for(Point neigh : neighbors){
                 if(!checkIfOutOfRange(neigh)){
-                    if (maze.getMazeElements().get(neigh.y).get(neigh.x).getType() == 0 || maze.getMazeElements().get(neigh.y).get(neigh.x).getType() == 4 && findExistingPath(neigh) == null) {
+                    if (maze.getMazeElements().get(neigh.y).get(neigh.x).getType() == '.' || maze.getMazeElements().get(neigh.y).get(neigh.x).getType() == 'X' && findExistingPath(neigh) == null) {
                         queue.add(new QueueElement(current, neigh));
                     }
                 }
@@ -77,8 +81,40 @@ public abstract class AbsractFindPathInputReader {
                 break;
             }
         }
-
         return getShortestPath();
+    }
+
+    public void verifyMaze() throws Exception {
+        int startCounter = 0;
+        int endCounter = 0;
+        int previous = maze.getMazeElements().get(0).size();
+        for(List<MazeElement> mazeElements : maze.getMazeElements()){
+            if(previous != mazeElements.size()){
+                throw new Exception("Bad dimensions");
+            }
+            for(MazeElement mazeElement : mazeElements){
+                switch (mazeElement.getType()){
+                    case 'S':
+                        if(++startCounter > 1){
+                            throw new Exception("Only one start point is allowed");
+                        }
+                        break;
+                    case 'X':
+                        if(++endCounter > 1){
+                            throw new Exception("Only one end point is allowed");
+                        }
+                        break;
+                    case '.':
+                    case '#':
+                        break;
+                    default:
+                        throw new Exception("Bad input. Allowed 'SX.#'");
+                }
+            }
+        }
+        if(startCounter == 0 || endCounter == 0){
+            throw new Exception("Couldnt find start or end point");
+        }
     }
 
     public boolean checkIfOutOfRange(Point point){
